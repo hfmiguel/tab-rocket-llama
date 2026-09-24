@@ -134,7 +134,11 @@ export class CompletionRequest {
     private async requestSingleLineCompletion(prefix: string, suffix: string, abort: AbortSignal, reportRequestSent: () => void): Promise<CompletionText | null> {
         log('Requesting completion: type: ' + this.config.promptTemplate + ', prefix:\n' + prefix + '\nSuffix:\n' + suffix);
 
-        const prompt = renderInfillPrompt(this.config.promptTemplate, prefix, suffix);
+        const infillPrompt = renderInfillPrompt(this.config.promptTemplate, prefix, suffix);
+        const systemPrompt = this.config.systemPrompt.trim();
+        const prompt = systemPrompt.length > 0
+            ? systemPrompt + '\n\n' + infillPrompt
+            : infillPrompt;
         const stop = [...getReservedPromptTokens(this.config.promptTemplate)];
 
         reportRequestSent();
