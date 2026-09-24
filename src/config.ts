@@ -5,6 +5,7 @@ export const configurationSection = 'tabRocket';
 const defaultBaseUrl = 'http://127.0.0.1:1234/v1';
 const defaultModel = 'qwen3-coder-30b';
 const defaultPromptTemplate = 'qwen';
+const defaultSystemPrompt = '';
 const defaultPrefixContextMaxLength = 4000;
 const defaultSuffixContextMaxLength = 4000;
 const defaultDebounceMs = 250;
@@ -14,6 +15,7 @@ export interface TabRocketConfig {
     baseUrl: string;
     model: string;
     promptTemplate: PromptTemplateType;
+    systemPrompt: string;
     prefixContextMaxLength: number;
     suffixContextMaxLength: number;
     debounceMs: number;
@@ -28,6 +30,7 @@ export function getTabRocketConfig(): TabRocketConfig {
         baseUrl: config.get<string>('baseUrl', defaultBaseUrl),
         model: config.get<string>('model', defaultModel),
         promptTemplate: isPromptTemplateType(promptTemplateSetting) ? promptTemplateSetting : defaultPromptTemplate,
+        systemPrompt: config.get<string>('systemPrompt', defaultSystemPrompt),
         prefixContextMaxLength: Math.max(0, config.get<number>('prefixContextMaxLength', defaultPrefixContextMaxLength)),
         suffixContextMaxLength: Math.max(0, config.get<number>('suffixContextMaxLength', defaultSuffixContextMaxLength)),
         debounceMs: config.get<number>('debounceMs', defaultDebounceMs),
